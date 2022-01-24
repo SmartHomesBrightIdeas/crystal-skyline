@@ -39,7 +39,7 @@ colorModes[1] =  (f) => h1+t1+f/center
 colorModes[2] =  (f) => .618 * round(f / size);
 
 // "pixel" block size information
-export var size = 20;
+export var size = 8;
 var halfSize = size / 2;
 
 // speed control.  How many milliseconds do we wait between
@@ -126,13 +126,13 @@ export function render(index) {
   // if the pixel has reached the "stacked" region, color it accoring to color mode
   // (by calling the user-selected coloring function from our array of pointers.)
   if (index > (center - counter)) {
-    if (index >= 80) {
+    if (index >= 29) {
       hsv(h1,s1,v1);
-    } else if (index >= 60) {
+    } else if (index >= 22) {
       hsv(h2,s1,v1);
-    } else if (index >= 40) {
+    } else if (index >= 14) {
       hsv(h3,s1,v1);
-    } else if (index >= 20) {
+    } else if (index >= 7) {
       hsv(h4,s1,v1);
     } else {
       hsv(h5,s1,v1);
