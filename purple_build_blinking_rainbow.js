@@ -39,13 +39,13 @@ colorModes[1] =  (f) => random(5)
 colorModes[2] =  (f) => .618 * round(f / size);
 
 // "pixel" block size information
-export var size = 20;
+export var size = 8;
 var halfSize = size / 2;
 
 // speed control.  How many milliseconds do we wait between
 // pixel movements?
 var frameTime;
-var msPerFrame = 15
+var msPerFrame = 60
 
 // Slider UI
 export function hsvPickerColor1(h,s,v) {
