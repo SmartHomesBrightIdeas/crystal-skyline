@@ -190,31 +190,31 @@ export function beforeRender(delta) {
 
      } else {
 
-       if (second < 15) {
+      if (second < 15) {
 
-         //slot 14
-         mode = 16
-         // paste before render code here for slot 14
-         //*************************************************
-         // Millipede BeforeRender, Slot 14 Mode 16
-         //*************************************************
-         speed = 20 // I moved these into before render
-         legs = 10
-         t1 = time(1 / speed)
-         t2 = time(2 / speed)
+       //slot 14
+       mode = 16
+       // paste before render code here for slot 14
+       //*************************************************
+       // Millipede BeforeRender, Slot 14 Mode 16
+       //*************************************************
+       speed = 20 // I moved these into before render
+       legs = 10
+       t1 = time(1 / speed)
+       t2 = time(2 / speed)
 
-       } else if (second < 30) {
+      } else if (second < 30) {
 
-         // slot 15
-         mode = 17
-         // paste before render code here for slot 15
-         //*************************************************
-         // Opposites BeforeRender, Slot 15 Mode 17
-         //*************************************************
-         t1 = time(6 / 65.536)  // Wave one every 6 seconds
-         t2 = time(12 / 65.536) // Wave two every 12 seconds
+       // slot 15
+       mode = 17
+       // paste before render code here for slot 15
+       //*************************************************
+       // Opposites BeforeRender, Slot 15 Mode 17
+       //*************************************************
+       t1 = time(6 / 65.536)  // Wave one every 6 seconds
+       t2 = time(12 / 65.536) // Wave two every 12 seconds
 
-       } else if (second < 45) {
+      } else if (second < 45) {
 
          // slot 16
          mode = 18
@@ -225,12 +225,14 @@ export function beforeRender(delta) {
          values = array(pixelCount) //I moved these variables into before render
          hues = array(pixelCount) //
          for (i = 0; i < pixelCount; i++) {
-         values[i] -= .005 * delta * .1
-         if (values[i] <= 0) {
-         values[i] = random(1)
-          hues[i] = time(4.6 / 65.536) + 0.2 * triangle(i / pixelCount)
+          values[i] -= .005 * delta * .1
+          if (values[i] <= 0) {
+            values[i] = random(1)
+            hues[i] = time(4.6 / 65.536) + 0.2 * triangle(i / pixelCount)
+          }
+        }
 
-       } else {
+      } else {
 
          // slot 17
          mode = 19
@@ -240,9 +242,8 @@ export function beforeRender(delta) {
         //*************************************************
         mode = 3
         t1 = triangle(time(.1))  // Mirror time (bounce)
-
-       }
-     }
+      }
+    }
   }
 }
 
@@ -284,6 +285,7 @@ export function render(index) {
      s = random(100) < 90
      v = random(1) > .995
      hsv(h, s, v)
+   }
 
 
  } else if (minute % 5 == 1) {  // 0, 1, 2, 3, 4
@@ -367,9 +369,11 @@ export function render(index) {
     //*************************************************
     // Color Fade Pulse Render, Slot 6 Mode 8
     //*************************************************
-    t1 = time(.01) // For hue movement
-    t2 = time(.02) // For pulse movement
-    t3 = time(.1)  // White / desaturation movement
+
+    // I commented this out because it's already beforeRender code in the render
+    // t1 = time(.01) // For hue movement
+    // t2 = time(.02) // For pulse movement
+    // t3 = time(.1)  // White / desaturation movement
 
    } else if (second < 30) {
 
