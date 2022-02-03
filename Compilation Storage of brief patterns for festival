@@ -1,0 +1,455 @@
+//Compilation of short Programs for Festival
+//*******************************************
+//Rainbow rocket sparks - slot 3
+//*********************************************
+
+export function beforeRender(delta) {
+  // time() outputs a sawtooth from 0..1. An argument of 0.05 means it takes
+  // 0.04 * 65.536 seconds to progress to 1 before looping back to 0.
+  t1 = time(0.04)
+}
+
+export function render(index) {
+
+  canSpark = square(index / pixelCount + t1, 0.15)
+  isSpark = canSpark && random(1) > 0.95
+  isFire = square(index / pixelCount + t1 + 0.05, 0.08)
+  h = (index / (pixelCount / 8)) % 1
+  hsv(h, isFire, isFire || isSpark)
+}
+
+//************************************************
+//Sierpinski Rainbow - slot 4
+//*********************************************
+
+
+export function beforeRender(delta) {
+  hl = pixelCount/2
+  hw = sqrt(pixelCount)
+  t1 =  time(.1)
+  t2 = time(0.13)
+}
+
+export function render(index) {
+
+  c1 = 1-abs(index - hl)/hl
+  c2 = wave(c1)
+  c3 = wave(c2 + t1)
+  v = wave(c3 + t1)
+  v = v*v
+  hsv(c1 + t2,1,v)
+}
+
+export function render2D(index, x, y) {
+  c1 = y & x
+  c2 = wave(c1)
+  c3 = wave(c2 + t1)
+  v = wave(c3 + t1)
+  v = v*v
+  hsv(c1 + t2,1,v)
+}
+//*********************************************
+//Block Reflections - slot 2
+//*********************************************
+
+var speedRange = 1/1000 // this scales the milliseconds back to a usable range. shown here, the max rate is 1Hz
+var speed = speedRange // controlled by slider
+
+export function sliderSpeed(s) {
+  speed = s*s * speedRange // square it to give better control at lower values, then scale it
+}
+
+var t1
+export function beforeRender(delta) {
+  t1 = (t1 + delta * speed) % 1 // accumulate time in t1, and wrap it using modulus math to keep it between 0-1
+  t2 = t1 *PI2
+  t3 = t1 /2
+  t4 = t1 * PI2
+}
+
+//export function beforeRender(delta) {
+//  t1 = time(0.1)       // 0..1 sawtooth every 0.1 * 65.535 seconds
+ // t2 = time(0.1) * PI2 // PI2 is 2 * Pi, so this traverses a circle in radians
+ // t3 = time(0.5)
+ // t4 = time(0.2) * PI2
+//}
+
+export function render(index) {
+  h = sin(t2) // While wave(0..1) outputs 0..1, sin(0..PI2) outputs -1..1
+
+  h += (index - pixelCount / 2) / pixelCount *
+              (10 * triangle(t3) + 4 * sin(t4))
+
+  m = 0.3 + 0.2 * triangle(t1)
+
+  h %= m
+
+  v = (abs(h) + m + t1) % 1
+
+  v = v * v // Typical gamma scaling
+  hsv(h, 1, v)
+}
+
+//*********************************************
+//Color Bands - slot 5
+//*********************************************
+export function beforeRender(delta) {
+  t1 = time(.25)
+  t2 = time(.15)
+}
+
+export function render(index) {
+  h = index / (pixelCount / 2) // Notice how each hue appears twice
+  s = wave(-index / 3 + t1)
+  s = 1 - s * s * s * s
+  v = wave(index / 2 + t2) * wave(index / 5 - t2) + wave(index / 7 + t2)
+  v = v * v * v * v
+  hsv(h, s, v)
+}
+
+//*************************************************
+//Color Fade Pulse - slot 6
+//*************************************************
+
+export function beforeRender(delta) {
+  t1 = time(.01) // For hue movement
+  t2 = time(.02) // For pulse movement
+  t3 = time(.1)  // White / desaturation movement
+}
+
+export function render(index) {
+  h = index / pixelCount * 2 - t1
+
+  v = triangle(index / pixelCount * 4 + t2)
+  v = v * v * v * v
+
+  s = wave(index / pixelCount / 2 + t3)
+
+  hsv(h, s, v)
+}
+
+//************************************************
+//Color Twinkle Bounce - slot 7
+//************************************************
+export function beforeRender(delta) {
+  t1 = time(.05) * PI2
+}
+
+export function render(index) {
+  h = 1 + sin(index / 2 + 5 * sin(t1))
+  h += time(.1)
+  v = (1 + sin(index / 2 + 5 * sin(t1))) / 2
+  v = v * v * v * v // Gamma correction
+  hsv(h, 1, v)
+}
+//**********************************************
+// Color Twinkles
+//*********************************************
+
+export function beforeRender(delta) {
+  t1 = time(.50) * PI2
+  t2 = time(.15) * PI2 // 3.33 times faster than t1
+}
+
+export function render(index) {
+
+  h = sin(index / 3 + PI2 * sin(index / 2 + t1))
+
+    v = wave(index / 3 / PI2 + sin(index / 2 + t2))
+  v = v * v * v * v // Gamma correction
+
+    v = v > .1 ? v : 0
+
+  hsv(h, 1, v)
+}
+//**************************************************
+// Edgeburst
+//*************************************************
+
+export function beforeRender(delta) {
+  t1 = triangle(time(.1))  // Mirror time (bounce)
+}
+
+export function render(index) {
+  pct = index / pixelCount
+  edge = clamp(triangle(pct) + t1 * 4 - 2, 0, 1)  // Mirror space
+
+  h = edge * edge - .2  // Expand violets
+
+  v = triangle(edge)    // Doubles the frequency
+
+  hsv(h, 1, v)
+}
+
+//************************************************
+//Firework Dust
+//************************************************
+
+export function render(index) {
+  // Every pixel is given a random hue from 0 to 1, IE the entire hue wheel
+  h = random(1)
+
+  /*
+    If a random number between 0 and 100 is less than 90 (i.e. most of the
+    time), this comparison will return "true", which is also the value 1. A
+    saturation of 1 is a color, while saturation of 0 is white. So this makes
+    10% of the dust white.
+  */
+  s = random(100) < 90
+
+  /*
+    If a random decimal between 0 and 1 is over 0.995, then the value is 1 and
+    the pixel is on. Otherwise it's zero (off). Another way of thinking about
+    this: The odds of a pixel being on are ~ 5-in-1000, or 1-in-200.
+  */
+  v = random(1) > .995
+
+  hsv(h, s, v)
+}
+
+//************************************************
+//Firework Nova
+//************************************************
+
+scale = .5
+export function beforeRender(delta) {
+  t1 = time(.02)
+  t2 = time(.1)
+}
+
+export function render3D(index, x, y, z) {
+  //center coordinates
+  x -= 0.5
+  y -= 0.5
+  z -= 0.5
+  //get pixel distance from center
+  r = sqrt(x*x + y*y + z*z) * scale
+  //make colors
+  h = (x+y+z)/3 + t2
+  //blast wave - a triangle's peak moving based on the center
+  //clipped to 75% of the waveform - v goes negative: +0.25 to -0.75
+  v = triangle(r - t1) - .75
+  //trailing the outward burst are random white sparks
+  //between 0-12.5% chance depending on distance to peak
+  spark = triangle(r - t1 + .2) - .75 > random(2)
+  if (spark) {
+    rgb(1,1,1) //sparks are white
+  } else {
+    v = v*4 //bring the triangle's peak back to 0-1 range
+    v = v*v*v //gives more definition to the wave, preserve negatives
+    hsv(h,1,v)
+  }
+}
+
+//************************************************
+// Glitch Bands
+//************************************************
+
+
+export function beforeRender(delta) {
+  t1 = time(.1) * PI2 // Notice we go from 0..2*Pi for timers fed to sin()
+  t2 = time(.1)       // And 0..1 for timers fed to traingle()
+  t3 = time(.5)
+  t4 = time(.2) * PI2
+  t5 = time(.05)
+  t6 = time(.02)
+}
+
+export function render(index) {
+  h = sin(t1)
+  h += (index - pixelCount / 2) / pixelCount * (triangle(t3) * 10 + 4 * sin(t4))
+  m = .3 + triangle(t2) * .2
+  h %= m
+
+  s1 = triangle(t5 + index / pixelCount * 5)
+  s1 = s1 * s1
+
+    s2 = triangle(t6 - index / pixelCount)
+  // Strongly convex
+  s2 = s2 * s2 * s2 * s2
+
+    s = 1 - triangle(s1 * s2)
+
+  v = (s1 > s2) + .5
+
+  hsv(h, s, v)
+}
+
+//************************************************
+//  Green Ripple reflections
+//************************************************
+
+
+export function beforeRender(delta) {
+ t1 = time(.1) * PI2 // Notice we go from 0..2*Pi for timers fed to sin()
+ t2 = time(.1)       // And 0..1 for timers fed to traingle()
+ t3 = time(.5)
+ t4 = time(.2) * PI2
+ t5 = time(.05)
+ t6 = time(.02)
+}
+
+export function render(index) {
+  h = sin(t1)
+ h += (index - pixelCount / 2) / pixelCount * (triangle(t3) * 10 + 4 * sin(t4))
+ m = .3 + triangle(t2) * .2
+ h %= m
+
+ s1 = triangle(t5 + index / pixelCount * 5)
+ s1 = s1 * s1
+
+  s2 = triangle(t6 - index / pixelCount)
+  s2 = s2 * s2 * s2 * s2
+
+ s = 1 - triangle(s1 * s2)
+
+ v = (s1 > s2) + .5
+
+ hsv(h, s, v)
+}
+
+//************************************************
+// Firework Rocket Sparks
+//************************************************
+
+export function beforeRender(delta) {
+    t1 = time(0.04)
+}
+
+ export function render(index) {
+   canSpark = square(index / pixelCount + t1, 0.15)
+
+  isSpark = canSpark && random(1) > 0.95
+
+    isFire = square(index / pixelCount + t1 + 0.05, 0.05)
+
+  h = (index / (pixelCount / 5)) % .2
+
+  hsv(h, isFire, isFire || isSpark)
+}
+
+
+//************************************************
+// Marching Rainbow
+//************************************************
+
+export function beforeRender(delta) {
+  t1 = time(.1)
+  t2 = time(.05)
+}
+
+export function render(index) {
+  pct = index / pixelCount // Percent this pixel is into the overall strip
+
+  h = wave(wave(wave(t1 + pct)) - pct)
+
+  w1 = wave(t1 + pct)
+  w2 = wave(t2 - pct * 10)
+
+  v = w1 - w2
+
+    hsv(h, 1, v)
+}
+
+//************************************************
+//Millipede
+//************************************************
+
+speed = 20
+legs = 10
+
+export function beforeRender(delta) {
+  t1 = time(1 / speed)
+  t2 = time(2 / speed)
+}
+
+export function render(index) {
+  h = index / pixelCount + wave(t1)
+  h += (index / pixelCount + t2) * legs / 2 % .5
+  v = wave(h + t2)
+  v = v * v // Gamma correction
+  hsv(h, 1, v)
+}
+
+//************************************************
+// Opposites
+//************************************************
+
+export function beforeRender(delta) {
+  t1 = time(6 / 65.536)  // Wave one every 6 seconds
+  t2 = time(12 / 65.536) // Wave two every 12 seconds
+}
+
+export function render(index) {
+  pct = index / pixelCount  // Percentage into the strip length
+  w1 = wave(t1 + pct)
+  w2 = wave(t2 - pct)       // Notice the opposite phase shift
+  w3 = wave(pct + w1 + w2)
+
+  // Create a basic palette of two hue ranges: 0.15..0.3 & 0.5..0.55.
+  // If t1 is taken out, the pattern will only be yellows and blues.
+  h = w3 % .3
+  h = (h > .15 ? h : h + .5) + t1
+
+  v = (w1 + .1) * (w2 + .1) * (w3 + .1)
+  v = v * v  // Gamma correction
+
+  hsv(h, 1, v)
+}
+
+
+//************************************************
+//
+//************************************************
+
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+
+
+//************************************************
+//
+//************************************************
+=--0===
