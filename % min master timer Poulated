@@ -1,0 +1,492 @@
+export function beforeRender(delta) {
+   second = clockSecond()
+   minute = clockMinute()
+
+   if (minute % 5 == 0 && second >= 15 && second <= 45) {
+
+      // Minute (1-60) Mod 5 which 20 second portion of the 5 min program are we in. then what second segment.
+     // 0:15 - 0:45 Sunrise
+     // custom time function
+     mode = 2
+     if (second == 15 && t != 0) {
+       t = 0
+     } else {
+       t += (.00075/2)
+     }
+     if (t >= 1) {
+       t = 0;
+     }
+ // only for sunrise
+   } else {
+     if (minute % 5 == 0) { // 1st minute of non-custom
+
+       if (second < 15) {
+
+         // 0:00 - 0:15 -- Night
+
+         mode = 1
+         h = random(1)
+         // s = random(100) < 90
+         s = 0
+
+         v = random(1) > .9989
+         hsv(h, s, v)
+
+       } else {
+
+        // slot 1 before render
+        //**************************************************
+        // Firework Dust Slot 1 Mode 3
+        //*************************************************
+        // nothing in prerender
+       }
+     } else if (minute % 5 == 1) {
+
+       if (second < 15) {
+
+         // slot 2
+         mode = 4
+         // paste before render code here for slot 2
+        //*************************************************
+        // Block Reflections BeforeRender, Slot 2 Mode 4
+        //*************************************************
+        t2 = time(0.1) * PI2
+        t1 = time(.1)
+        t3 = time(.5)
+        t4 = time(0.2) * PI2
+
+       } else if (second < 30) {
+
+         // slot 3
+         mode = 5
+         // paste before render code here for slot 3
+         //*************************************************
+         // Rainbow Rocket Sparks BeforeRender, Slot 3 Mode 5
+         //*************************************************
+         t1 = time(0.04)
+
+
+       } else if (second < 45) {
+        // slot 4
+        mode = 6
+        // paste before render code here for slot 4
+        //*************************************************
+        // Block Reflections BeforeRender, Slot 4 Mode 6
+        //*************************************************
+        hl = pixelCount/2
+        hw = sqrt(pixelCount)
+        t1 =  time(.1)
+        t2 = time(0.13)
+
+       } else {
+
+         // slot 5
+         mode = 7
+        //*************************************************
+        //  Color Bands BeforeRender, Slot 5 Mode 7
+        //*************************************************
+        t1 = time(.25)
+        t2 = time(.15)
+
+       }
+     } else if (minute % 5 == 2) {
+
+       if (second < 15) {
+        // slot 6
+        mode = 8
+        //*************************************************
+        //  Color Fade Pulse BeforeRender, Slot 6 Mode 8
+        //*************************************************
+        t1 = time(.01) // For hue movement
+        t2 = time(.02) // For pulse movement
+        t3 = time(.1)  // White / desaturation movement
+
+       } else if (second < 30) {
+
+        // slot 7
+         mode = 9
+        // paste before render code here for slot 7
+        //*************************************************
+        // Color Twinkle Bounce BeforeRender, Slot 7 Mode 9
+        //*************************************************
+        t1 = time(.05) * PI2
+
+       } else if (second < 45) {
+
+         // slot 8
+         mode = 10
+        // paste before render code here for slot 8
+        //*************************************************
+        //  Color Twinkle BeforeRender, Slot 8 Mode 10
+        //*************************************************
+        t1 = time(.50) * PI2
+        t2 = time(.15) * PI2 // 3.33 times faster than t1
+
+       } else {
+
+         // slot 9
+         mode = 11
+        // paste before render code here for slot 9
+        //*************************************************
+        //   Firework Nova BeforeRender, Slot 9 Mode 11
+        //*************************************************
+        t1 = time(.02)
+        t2 = time(.1)
+
+       }
+     } else if (minute % 5 == 3) {
+
+       if (second < 15) {
+
+         // slot 10
+         mode = 12
+         // paste before render code here for slot 10
+         //*************************************************
+         // Glitch Bands BeforeRender, Slot 10 Mode 12
+         //*************************************************
+          t1 = time(.1) * PI2 // Notice we go from 0..2*Pi for timers fed to sin()
+          t2 = time(.1)       // And 0..1 for timers fed to traingle()
+          t3 = time(.5)
+          t4 = time(.2) * PI2
+          t5 = time(.05)
+          t6 = time(.02)
+
+       } else if (second < 30) {
+
+         // slot 11
+         mode = 13
+         // paste before render code here for slot 11
+         //*************************************************
+         // Green Ripple Reflections BeforeRender, Slot 11 Mode 13
+         //*************************************************
+         t1 = time(.1) * PI2 // Notice we go from 0..2*Pi for timers fed to sin()
+         t2 = time(.1)       // And 0..1 for timers fed to traingle()
+         t3 = time(.5)
+         t4 = time(.2) * PI2
+         t5 = time(.05)
+         t6 = time(.02)
+
+       } else if (second < 45) {
+
+         // slot 12
+         mode = 14
+         // paste before render code here for slot 12
+         //*************************************************
+         // Firework Rocket Sparks BeforeRender, Slot 12 Mode 14
+         //*************************************************
+         t1 = time(0.04)
+
+       } else {
+
+         // slot 13
+         mode = 15
+         // paste before render code here for slot 13
+         //*************************************************
+         // Marching Rainbow Before Render, Slot 13 Mode 15
+         //*************************************************
+         t1 = time(.1)
+         t2 = time(.05)
+       }
+
+     } else {
+
+      if (second < 15) {
+
+       //slot 14
+       mode = 16
+       // paste before render code here for slot 14
+       //*************************************************
+       // Millipede BeforeRender, Slot 14 Mode 16
+       //*************************************************
+       speed = 20 // I moved these into before render
+       legs = 10
+       t1 = time(1 / speed)
+       t2 = time(2 / speed)
+
+      } else if (second < 30) {
+
+       // slot 15
+       mode = 17
+       // paste before render code here for slot 15
+       //*************************************************
+       // Opposites BeforeRender, Slot 15 Mode 17
+       //*************************************************
+       t1 = time(6 / 65.536)  // Wave one every 6 seconds
+       t2 = time(12 / 65.536) // Wave two every 12 seconds
+
+      } else if (second < 45) {
+
+         // slot 16
+         mode = 18
+         // paste before render code here for slot 16
+         //*************************************************
+         // Blink Fade Before Render Slot 16 Mode 18
+         //*************************************************
+         values = array(pixelCount) //I moved these variables into before render
+         hues = array(pixelCount) //
+         for (i = 0; i < pixelCount; i++) {
+          values[i] -= .005 * delta * .1
+          if (values[i] <= 0) {
+            values[i] = random(1)
+            hues[i] = time(4.6 / 65.536) + 0.2 * triangle(i / pixelCount)
+          }
+        }
+
+      } else {
+
+         // slot 17
+         mode = 19
+         // paste before render code here for slot 17
+        //**************************************************
+        // Edgeburst BeforeRender, Slot 17 Mode 19
+        //*************************************************
+        mode = 3
+        t1 = triangle(time(.1))  // Mirror time (bounce)
+      }
+    }
+  }
+}
+
+export function render(index) {
+ if (minute % 5 == 0) {
+
+   if (second < 15) {
+
+    // 0:00 - 0:15 -- Night
+    //*************************************************
+    // NIGHT Render
+    //*************************************************
+    h = random(1)
+    s = random(100) < 90
+    // s = 0
+    v = random(1) > .9989
+    hsv(h, s, v)
+
+   } else if (second < 45) {
+
+    // 0:15 - 0:30 -- Sunrise
+    //*************************************************
+    // Sunrise
+    //*************************************************
+
+    h = max(index/pixelCount/12 + .20, .21)
+    s = 1
+    v = .2 + t-(index/pixelCount)
+    hsv(h, s, v)
+
+   } else {
+
+     // slot 1 render
+     // I put "Edgeburst" here as an example
+     //**************************************************
+     // Firework Dust Slot 1
+     //*************************************************
+     h = random(1)
+     s = random(100) < 90
+     v = random(1) > .995
+     hsv(h, s, v)
+   }
+
+
+ } else if (minute % 5 == 1) {  // 0, 1, 2, 3, 4
+
+
+   // we're in the 2nd minute of 5
+
+   if (second < 15) {
+
+     // slot 2
+     // paste render code here for slot 2
+     //*************************************************
+     // Block Reflections Render, Slot 2
+     //*************************************************
+
+     h = sin(t2)
+     m = (.3 + triangle(t1) * .2)
+     h = h + (((index - pixelCount / 2) / pixelCount * ( triangle(t3) * 10 + 4 * sin(t4)) % m))
+     s = 1;
+     v = ((abs(h) + abs(m) + t1) % 1);
+     v = v * v
+     hsv(h, s, v)
+
+   } else if (second < 30) {
+
+    // slot 3
+    // paste render code here for slot 3
+    // code between brackets -- the function "body"
+    //*******************************************
+    //Rainbow rocket sparks Slot 3
+    //*********************************************
+    canSpark = square(index / pixelCount + t1, 0.15)
+    isSpark = canSpark && random(1) > 0.95
+    isFire = square(index / pixelCount + t1 + 0.05, 0.08)
+    h = (index / (pixelCount / 8)) % 1
+    hsv(h, isFire, isFire || isSpark)
+
+   } else if (second < 45) {
+    //************************************************
+    //Sierpinski Rainbow Render Slot 4
+    //*********************************************
+    // slot 4
+    // paste render code here for slot 4
+    c1 = 1-abs(index - hl)/hl
+    c2 = wave(c1)
+    c3 = wave(c2 + t1)
+    v = wave(c3 + t1)
+    v = v*v
+    hsv(c1 + t2,1,v)
+
+   } else {
+
+    // slot 5
+    // paste render code here for slot 5
+    //*************************************************
+    // Color Bands Render, Slot 5 Mode 7
+    //*************************************************
+    h = index / (pixelCount / 2) // Notice how each hue appears twice
+    s = wave(-index / 3 + t1)
+    s = 1 - s * s * s * s
+    v = wave(index / 2 + t2) * wave(index / 5 - t2) + wave(index / 7 + t2)
+    v = v * v * v * v
+    hsv(h, s, v)
+
+   }
+ } else if (minute % 5 == 2) { // in the 3rd minute of the 5 minute cycle
+
+  // example of two 30 second slots in this minute
+  /*
+    if (second < 30) {
+      // first 30 seconds of this minute
+    } else {
+      // second 30 seconds of this minute
+      //wont disturmb following 15 second block
+    }
+  */
+   if (second < 15) {
+
+    // slot 6
+    // paste render code here for slot 6
+    //*************************************************
+    // Color Fade Pulse Render, Slot 6 Mode 8
+    //*************************************************
+
+    // I commented this out because it's already beforeRender code in the render
+    // t1 = time(.01) // For hue movement
+    // t2 = time(.02) // For pulse movement
+    // t3 = time(.1)  // White / desaturation movement
+
+   } else if (second < 30) {
+
+    // slot 7
+    // paste render code here for slot 7
+    //*************************************************
+    //  Render, Slot 7  Mode 9
+    //*************************************************
+    h = 1 + sin(index / 2 + 5 * sin(t1))
+    h += time(.1)
+    v = (1 + sin(index / 2 + 5 * sin(t1))) / 2
+    v = v * v * v * v // Gamma correction
+    hsv(h, 1, v)
+
+   } else if (second < 45) {
+
+     // slot 8
+     // paste render code here for slot 8
+     //*************************************************
+    //  Render, Slot 8
+    //*************************************************
+
+   } else {
+
+     // slot 9
+     // paste render code here for slot 9
+     //*************************************************
+    //  Render, Slot 9  Mode 11
+    //*************************************************
+
+   }
+ } else if (minute % 5 == 3) {
+
+   if (second < 15) {
+
+     // slot 10
+     // paste render code here for slot 10
+     //*************************************************
+    //  Render, Slot 10
+    //*************************************************
+
+   } else if (second < 30) {
+
+     // slot 11
+     // paste render code here for slot 11
+     //*************************************************
+    //  Render, Slot 11
+    //*************************************************
+
+   } else if (second < 45) {
+
+    // slot 12
+    // paste render code here for slot 12
+    //*************************************************
+    //  Render, Slot 12
+    //*************************************************
+
+   } else {
+
+    // slot 13
+    // paste render code here for slot 13
+    //*************************************************
+    //  Render, Slot 13
+    //*************************************************
+
+   }
+ } else {
+
+   if (second < 15) {
+
+     //slot 14
+     // paste render code here for slot 14
+     //*************************************************
+     //  Render, Slot 14
+     //*************************************************
+
+   } else if (second < 30) {
+
+     // slot 15
+     // paste render code here for slot 15
+     //*************************************************
+     //  Render, Slot 15
+     //*************************************************
+
+   } else if (second < 45) {
+
+     // slot 16
+     // paste render code here for slot 16
+     //*************************************************
+     // Blink Fade Render, Slot 16
+     //*************************************************
+     h = hues[index]    // Retrieve the hue for this pixel
+     v = values[index]  // Retrieve the brightness value for this pixel
+     v = v * v          // Gamma scaling: v is in 0..1 so this makes small v smaller
+     hsv(h, 1, v)       // Saturation is 1 -- no white is mixed in
+
+   } else {
+
+     // slot 17
+     // paste render code here for slot 17
+     // NOTE: if you want to put sunset here, it will need a custom time function like sunrise does
+     //*************************************************
+    //  Edgeburst Render, Slot 17
+    //*************************************************
+
+     pct = index / pixelCount
+     edge = clamp(triangle(pct) + t1 * 4 - 2, 0, 1)  // Mirror space
+     h = edge * edge - .2  // Expand violets
+     v = triangle(edge)    // Doubles the frequency
+     hsv(h, 1, v)
+
+   }
+ }
+}
+
+export var second, minute, mode, t, h, v;
