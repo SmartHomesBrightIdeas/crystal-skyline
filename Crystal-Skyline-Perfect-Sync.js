@@ -2,12 +2,12 @@ var h,s,v,h1,m,c1,c2,c3,canSpark,isSpark,isFire;
 var t1, t2, t3, t4, t5, t6,hl,hw,speed,legs;
 
 // This may need to be fine tuned on PBs with different clock speeds to make the sunrises all synchronized
-var sunriseIncrement = 0.00025
+var sunriseIncrement = 0.00026
 
 // Adjust this if you want to change the frequency of twinkling stars at night
 var nightSpeed = .5
 
-var customSpeed = pixelCount / 2013
+var customSpeed = pixelCount / 16013
 
 var globalTime = 0;
 var currentMode = 0;
@@ -57,16 +57,16 @@ function beforeRender2() {
   }
 }
 function render2(index) {
-  h = max(index/pixelCount/12 + .20, .21)
+  h = .31 - t/15 + random(.05) - random(.05)
   s = 1
-  v = .2 + t-(index/pixelCount)
+  v = .2 + t-(index/pixelCount) + random(.02) - random(.02)
   hsv(h, s, v)
 }
 
 // Edgeburst
 function beforeRender3() {
   mode = 3
-  t1 = triangle(customTime(.1))  // Mirror time (bounce)
+  t1 = triangle(time(.1))  // Mirror time (bounce)
 }
 function render3(index) {
   pct = index / pixelCount
@@ -229,13 +229,13 @@ function render12(index) {
 }
 
 // Green Ripple
-function beforeRender13() {
-  mode = 13
+function beforeRender19() {
+  mode = 19
   t1 = customTime(.03) * PI2 // A period of (0.03 * 65.535), or ~2 seconds
   t2 = customTime(.05) * PI2
   t3 = customTime(.04) * PI2
 }
-function render13(index) {
+function render19(index) {
   PI10 = PI^10;
   PI6 = PI^6
   a = sin(index / pixelCount * PI10 + t1)
@@ -250,7 +250,7 @@ function render13(index) {
 // Firework Rocket
 function beforeRender14() {
   mode = 14
-  t1 = customTime(0.04)
+  t1 = customTime(0.01)
 
 }
 function render14(index) {
@@ -313,12 +313,12 @@ function render17(index) {
 }
 
 // rainbow fonts
-function beforeRender19() {
-  mode = 19
+function beforeRender13() {
+  mode = 13
   hl = pixelCount/2
   t1 = customTime(.1)
 }
-function render19(index) {
+function render13(index) {
   c = 1-abs(index - hl)/hl
   c = wave(c)
   c = wave(c + t1)
