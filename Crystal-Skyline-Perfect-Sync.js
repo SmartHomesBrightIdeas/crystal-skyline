@@ -2,7 +2,7 @@ var h,s,v,h1,m,c1,c2,c3,canSpark,isSpark,isFire;
 var t1, t2, t3, t4, t5, t6,hl,hw,speed,legs;
 
 // This may need to be fine tuned on PBs with different clock speeds to make the sunrises all synchronized
-var sunriseIncrement = 0.00026
+var sunriseIncrement = 0.00026 * (pixelCount / 100)
 
 // Adjust this if you want to change the frequency of twinkling stars at night
 var nightSpeed = .5
@@ -103,7 +103,7 @@ function render4(index) {
 function beforeRender5() {
   // slot 3
   mode = 5
-  t1 = customTime(0.04)
+  t1 = customTime(0.2)
 }
 function render5(index) {
   // slot 3
@@ -250,7 +250,7 @@ function render19(index) {
 // Firework Rocket
 function beforeRender14() {
   mode = 14
-  t1 = customTime(0.01)
+  t1 = customTime(.3)
 
 }
 function render14(index) {
